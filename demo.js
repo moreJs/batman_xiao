@@ -20,5 +20,6 @@ conn.query(insertSQL,function(err1,err2){
 });
 
 //close connection
+//add test
 conn.end();
 
