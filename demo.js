@@ -13,12 +13,19 @@ var selectSQL = 'select * from t_user';
 var deletSQL = 'delete from u_user';
 var updateSQL = 'update t_user set name = "conan update" where name = "conan"';
 
-//insert
+/*//insert
 conn.query(insertSQL,function(err1,err2){
 	console.log(err1);
 	console.log(err2);
+});*/
+//select
+conn.query(selectSQL,function(err,data){
+	for(var item in data){
+		var temp = data[item];
+		console.log(temp['id']);
+		console.log(temp['name']);
+	}
 });
-
 //close connection
 //add test
 conn.end();
