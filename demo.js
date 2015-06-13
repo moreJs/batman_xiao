@@ -34,17 +34,14 @@ conn.query(insertSQL,function(err1,err2){
 //add test
 var getFrameByNameFn = function(name){
 	conn.query(getFrameByName +name +"'",function(err1,data){
-		//console.log(data[0]['frame'] || '');
 		proxy.emit('getFrameByNameFn',data[0]['frame'] || '');
 	});
 };
 proxy.on('getFrameByNameFn',function(frame){
-//	console.log(frame);
 	getUpperClassFrameFn(frame);
 });
 var getUpperClassFrameFn = function(id){
 	conn.query(getUpperClassFrame + id +"'",function(err1,data){
-	//	console.log(data[0]['short_value'] || '');
 		proxy.emit('getUpperClassFrameFn',data[0]['short_value'] || '');
 	});
 };
@@ -73,6 +70,41 @@ var getDeepth = function(name){
 
 //getFrameByNameFn('tyre');
 //getUpperClassFrameFn(11595);
-getDeepth('tyre'); 
+//getDeepth('tyre'); 
+
+//step1:匹配 D 的相似度
+var step1 = function(request,service){
+	var reg = new RegExp(request);
+	return reg.test(service) ? 1 : 0 ; 
+};
+
+//step2:数概念语义距离
+var step2_string = function(request,service){
+	if (request == service){
+		return 1 ;
+	}
+    
+}
+//step2:数值型语义距离
+var step2_number = function(request,service){
+	return request > service ? 0 : 1 ;
+};
+//step2: B的整体相似度
+var step2_B = function(request,service){
+	var length = request.length,
+		total_sim = 0;
+	for(var i = 0 ; i < length ; i++){
+		var item_req = request[i],
+			item_ser = service[i];
+		total_sim += Object.prototype.toString.call(item_req) == '[object String]' ? 
+					 	step2_string(item_req,item_ser) : step2_number(item_req,item_ser); 
+	}
+	return (total_sim/length).foFix(2);
+}
 
 
+
+
+
+
+//console.log(step1('轮胎','汽车 轮胎 发动机'));
