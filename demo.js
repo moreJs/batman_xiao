@@ -70,7 +70,7 @@ var getDeepth = function(name){
 
 //getFrameByNameFn('tyre');
 //getUpperClassFrameFn(11595);
-//getDeepth('tyre'); 
+getDeepth('parts'); 
 
 //step1:匹配 D 的相似度
 var step1 = function(request,service){
